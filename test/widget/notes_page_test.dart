@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:itg_notes/src/notes/notes_page.dart';
+import 'package:itg_notes/src/settings/settings_controller.dart';
+import 'package:itg_notes/src/settings/settings_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:itg_notes/src/home/home_page.dart';
 
-import 'notes/note_page.dart';
-import 'notes/notes_page.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
-
-/// The Widget that configures your application.
-class MyApp extends StatelessWidget {
-  const MyApp({
-    Key? key,
-    required this.settingsController,
-  }) : super(key: key);
-
-  final SettingsController settingsController;
-
-  @override
-  Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The AnimatedBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
+void main() {
+  Future<Widget> createWidgetUnderTest() async {
+    final settingsController = SettingsController(SettingsService());
+    await settingsController.loadSettings();
+    // return MyApp(settingsController: settingsController);
     return AnimatedBuilder(
       animation: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -52,7 +40,7 @@ class MyApp extends StatelessWidget {
           // The appTitle is defined in .arb files found in the localization
           // directory.
           onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+          AppLocalizations.of(context)!.appTitle,
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
@@ -68,15 +56,13 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
+                  // case SettingsView.routeName:
+                  //   return SettingsView(controller: settingsController);
+                  // case SampleItemDetailsView.routeName:
+                  //   return const SampleItemDetailsView();
                   case NotesPage.routeName:
-                    return const NotesPage();
-                  case NotePage.routeName:
-                    return const NotePage();
-                  case HomePage.routeName:
                   default:
-                    return const HomePage();
+                    return const NotesPage();
                 }
               },
             );
@@ -85,4 +71,17 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+  group('Notes page widget tests', () {
+    testWidgets('notes page class', (widgetTester) async {
+      await widgetTester.pumpWidget(await createWidgetUnderTest());
+      expect(find.byType(NotesPage), findsOneWidget);
+    });
+
+    testWidgets('correct title', (widgetTester) async {
+      await widgetTester.pumpWidget(await createWidgetUnderTest());
+      expect(find.text('Notes'), findsOneWidget);
+    });
+
+  });
 }

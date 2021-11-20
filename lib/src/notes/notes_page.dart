@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
-import 'sample_item.dart';
-import 'sample_item_details_view.dart';
+import 'note.dart';
+import 'note_page.dart';
 
-/// Displays a list of SampleItems.
-class SampleItemListView extends StatelessWidget {
-  const SampleItemListView({
+/// Displays a list of Notes.
+class NotesPage extends StatelessWidget {
+  const NotesPage({
     Key? key,
-    this.items = const [SampleItem(1), SampleItem(2), SampleItem(3)],
+    this.items = const [Note(1), Note(2), Note(3)],
   }) : super(key: key);
 
-  static const routeName = '/';
+  static const routeName = '/notes';
 
-  final List<SampleItem> items;
+  final List<Note> items;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sample Items'),
+        title: const Text('Notes'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -49,7 +49,7 @@ class SampleItemListView extends StatelessWidget {
           final item = items[index];
 
           return ListTile(
-            title: Text('SampleItem ${item.id}'),
+            title: Text('Note ${item.id}'),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -60,7 +60,7 @@ class SampleItemListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(
                 context,
-                SampleItemDetailsView.routeName,
+                NotePage.routeName,
               );
             }
           );
