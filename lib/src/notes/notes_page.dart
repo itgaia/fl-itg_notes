@@ -1,70 +1,55 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../settings/settings_view.dart';
 import 'note.dart';
 import 'note_page.dart';
+import 'notes_cubit.dart';
+import 'notes_state.dart';
 
-/// Displays a list of Notes.
 class NotesPage extends StatelessWidget {
-  const NotesPage({
-    Key? key,
-    this.items = const [Note(1), Note(2), Note(3)],
-  }) : super(key: key);
+  final NotesCubit notesCubit;
+  final String title;
+
+  const NotesPage({Key? key, required this.title, required this.notesCubit}) : super(key: key);
 
   static const routeName = '/notes';
 
-  final List<Note> items;
+  // Sending the Note to the next page:
+  _goToNotePage(BuildContext context, {Note? note}) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => NotePage(
+        notesCubit: notesCubit,
+        note: note,
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ),
-        ],
+        title: Text(title),
       ),
-
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body: ListView.builder(
-        // Providing a restorationId allows the ListView to restore the
-        // scroll position when a user leaves and returns to the app after it
-        // has been killed while running in the background.
-        restorationId: 'sampleItemListView',
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-
-          return ListTile(
-            title: Text('Note ${item.id}'),
-            leading: const CircleAvatar(
-              // Display the Flutter Logo image asset.
-              foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-            ),
-            onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                NotePage.routeName,
-              );
-            }
-          );
-        },
+      body: BlocBuilder<NotesCubit, NotesState>(
+        bloc: notesCubit,
+        builder: (context, state) => ListView.builder(
+          itemCount: state.notes.length,
+          itemBuilder: (context, index) {
+            var note = state.notes[index];
+            return ListTile(
+              title: Text(note.title),
+              subtitle: Text(note.content),
+              onTap: () => _goToNotePage(context, note: note),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _goToNotePage(context),
+        tooltip: 'Add',
+        child: const Icon(Icons.add),
       ),
     );
   }

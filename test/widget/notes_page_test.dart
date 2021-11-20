@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:itg_notes/src/notes/notes_cubit.dart';
 import 'package:itg_notes/src/notes/notes_page.dart';
 import 'package:itg_notes/src/settings/settings_controller.dart';
 import 'package:itg_notes/src/settings/settings_service.dart';
@@ -62,7 +63,7 @@ void main() {
                   //   return const SampleItemDetailsView();
                   case NotesPage.routeName:
                   default:
-                    return const NotesPage();
+                    return NotesPage(notesCubit: NotesCubit(), title: 'Notes');
                 }
               },
             );
