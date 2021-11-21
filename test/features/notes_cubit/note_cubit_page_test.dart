@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:itg_notes/src/notes/notes_cubit.dart';
-import 'package:itg_notes/src/notes/notes_page.dart';
-import 'package:itg_notes/src/settings/settings_controller.dart';
-import 'package:itg_notes/src/settings/settings_service.dart';
+import 'package:itg_notes/src/features/notes_cubit/note_cubit_page.dart';
+import 'package:itg_notes/src/features/notes_cubit/notes_cubit.dart';
+import 'package:itg_notes/src/features/settings/settings_controller.dart';
+import 'package:itg_notes/src/features/settings/settings_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -61,9 +61,9 @@ void main() {
                   //   return SettingsView(controller: settingsController);
                   // case SampleItemDetailsView.routeName:
                   //   return const SampleItemDetailsView();
-                  case NotesPage.routeName:
+                  case NoteCubitPage.routeName:
                   default:
-                    return NotesPage(notesCubit: NotesCubit(), title: 'Notes');
+                    return NoteCubitPage(notesCubit: NotesCubit());
                 }
               },
             );
@@ -76,13 +76,16 @@ void main() {
   group('Notes page widget tests', () {
     testWidgets('notes page class', (widgetTester) async {
       await widgetTester.pumpWidget(await createWidgetUnderTest());
-      expect(find.byType(NotesPage), findsOneWidget);
+      expect(find.byType(NoteCubitPage), findsOneWidget);
     });
 
     testWidgets('correct title', (widgetTester) async {
       await widgetTester.pumpWidget(await createWidgetUnderTest());
-      expect(find.text('Notes'), findsOneWidget);
+      expect(find.text('Note Cubit'), findsOneWidget);
     });
 
+    test('correct route name', () {
+      expect(NoteCubitPage.routeName, '/cubit/note');
+    });
   });
 }

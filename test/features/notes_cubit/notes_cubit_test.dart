@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:itg_notes/src/notes/note.dart';
-import 'package:itg_notes/src/notes/notes_cubit.dart';
+import 'package:itg_notes/src/features/notes_cubit/note_cubit.dart';
+import 'package:itg_notes/src/features/notes_cubit/notes_cubit.dart';
 
 void main() {
   group('Notes Cubit', () {
@@ -15,7 +15,7 @@ void main() {
       var cubit = NotesCubit();
       cubit.createNote(title, content);
       expect(cubit.state.notes.length, 1);
-      expect(cubit.state.notes.first, Note(id:1, title: title, content: content));
+      expect(cubit.state.notes.first, NoteCubit(id:1, title: title, content: content));
     });
 
     test('delete notes', () {
@@ -37,7 +37,7 @@ void main() {
       var newContent = 'my cool note content';
       cubit.updateNote(2, newTitle, newContent);
       expect(cubit.state.notes.length, 3);
-      expect(cubit.state.notes[1], Note(id: 2, title: newTitle, content: newContent));
+      expect(cubit.state.notes[1], NoteCubit(id: 2, title: newTitle, content: newContent));
     });
   });
 }

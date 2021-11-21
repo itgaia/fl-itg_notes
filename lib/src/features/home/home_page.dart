@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itg_notes/src/common/custom_button.dart';
-import 'package:itg_notes/src/notes/notes_page.dart';
+import 'package:itg_notes/src/core/custom_button.dart';
+import 'package:itg_notes/src/features/notes_cubit/notes_cubit_page.dart';
 
 import '../settings/settings_view.dart';
 
@@ -27,15 +27,15 @@ class HomePage extends StatelessWidget {
       body: ListTile(
         // title: Text('aaaaa'),
         leading: CustomButton(
-          title: 'Notes Page',
+          title: 'Notes Cubit Page',
           color: Colors.cyan,
           onPressed: () {
             Navigator.restorablePushNamed(
               context,
-              NotesPage.routeName,
+              NotesCubitPage.routeName,
             );
           },
-          key: const Key('buttonNotesPage')
+          key: const Key('buttonNotesCubitPage')
         ),
         // leading: const CircleAvatar(
         //   foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
         onTap: () {
           Navigator.restorablePushNamed(
             context,
-            NotesPage.routeName,
+            NotesCubitPage.routeName,
           );
         }
       )

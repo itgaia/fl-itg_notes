@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:itg_notes/src/home/home_page.dart';
+import 'package:itg_notes/src/features/home/home_page.dart';
 
-import 'notes/note_page.dart';
-import 'notes/notes_cubit.dart';
-import 'notes/notes_page.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'features/notes_cubit/note_cubit_page.dart';
+import 'features/notes_cubit/notes_cubit.dart';
+import 'features/notes_cubit/notes_cubit_page.dart';
+import 'features/settings/settings_controller.dart';
+import 'features/settings/settings_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -71,10 +71,10 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case NotesPage.routeName:
-                    return NotesPage(notesCubit: NotesCubit(), title: 'Notes',);
-                  case NotePage.routeName:
-                    return NotePage(notesCubit: NotesCubit(),);
+                  case NotesCubitPage.routeName:
+                    return NotesCubitPage(notesCubit: NotesCubit(), title: 'Notes Cubit',);
+                  case NoteCubitPage.routeName:
+                    return NoteCubitPage(notesCubit: NotesCubit(),);
                   case HomePage.routeName:
                   default:
                     return const HomePage();

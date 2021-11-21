@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-class NotesState {
+class NotesCubitState {
   final UnmodifiableListView notes;
 
-  NotesState(this.notes);
+  NotesCubitState(this.notes);
 }

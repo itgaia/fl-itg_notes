@@ -1,23 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'note.dart';
+import 'note_cubit.dart';
 import 'notes_cubit.dart';
 
 
-class NotePage extends StatefulWidget {
+class NoteCubitPage extends StatefulWidget {
   final NotesCubit notesCubit;
-  Note? note;
+  NoteCubit? note;
 
-  NotePage({Key? key, required this.notesCubit, this.note}) : super(key: key);
+  NoteCubitPage({Key? key, required this.notesCubit, this.note}) : super(key: key);
 
-  static const routeName = '/note';
+  static const routeName = '/cubit/note';
 
   @override
-  _NotePageState createState() => _NotePageState();
+  _NoteCubitPageState createState() => _NoteCubitPageState();
 }
 
-class _NotePageState extends State<NotePage> {
+class _NoteCubitPageState extends State<NoteCubitPage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
 
@@ -38,7 +38,7 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Note'),
+        title: Text('Note Cubit'),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),

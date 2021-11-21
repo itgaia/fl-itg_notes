@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:itg_notes/src/app.dart';
-import 'package:itg_notes/src/common/custom_button.dart';
-import 'package:itg_notes/src/home/home_page.dart';
-import 'package:itg_notes/src/settings/settings_controller.dart';
-import 'package:itg_notes/src/settings/settings_service.dart';
+import 'package:itg_notes/src/core/custom_button.dart';
+import 'package:itg_notes/src/features/home/home_page.dart';
+import 'package:itg_notes/src/features/settings/settings_controller.dart';
+import 'package:itg_notes/src/features/settings/settings_service.dart';
 
 void main() {
   Future<Widget> createWidgetUnderTest() async {
@@ -29,8 +29,8 @@ void main() {
       // var button = CustomButton(title: 'aaa', color: Colors.cyan, onPressed: () {},);
       expect(find.byType(CustomButton), findsOneWidget);
       // expect(find.byWidget(button), findsOneWidget);   // TODO: how can I find a specific button???
-      expect(find.byKey(const Key('buttonNotesPage')), findsOneWidget);
-      expect(find.text('Notes Page'), findsOneWidget);
+      expect(find.byKey(const Key('buttonNotesCubitPage')), findsOneWidget);
+      expect(find.text('Notes Cubit Page'), findsOneWidget);
     });
   });
 }
