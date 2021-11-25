@@ -50,3 +50,5 @@ app.*.map.json
 .idea
 .DS_Store
 /.itgsetup.log
+app_private_config.dart
+app_private_config.yaml

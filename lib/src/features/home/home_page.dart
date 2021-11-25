@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:itg_notes/src/core/custom_button.dart';
+import 'package:itg_notes/src/features/notes/presentation/notes_page.dart';
 import 'package:itg_notes/src/features/notes_cubit/notes_cubit_page.dart';
 
 import '../settings/settings_view.dart';
 
 class HomePage extends StatelessWidget {
+  static const keyButtonNotesPage = Key('buttonNotesPage');
+
   const HomePage({Key? key}) : super(key: key);
 
   static const routeName = '/';
@@ -24,29 +27,32 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      body: ListTile(
-        // title: Text('aaaaa'),
-        leading: CustomButton(
-          title: 'Notes Cubit Page',
-          color: Colors.cyan,
-          onPressed: () {
-            Navigator.restorablePushNamed(
-              context,
-              NotesCubitPage.routeName,
-            );
-          },
-          key: const Key('buttonNotesCubitPage')
-        ),
-        // leading: const CircleAvatar(
-        //   foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-        // ),
-        onTap: () {
-          Navigator.restorablePushNamed(
-            context,
-            NotesCubitPage.routeName,
-          );
-        }
-      )
+      body: Row(
+        children: [
+          CustomButton(
+            title: 'Notes Cubit Page',
+            color: Colors.cyan,
+            onPressed: () {
+              Navigator.restorablePushNamed(
+                context,
+                NotesCubitPage.routeName,
+              );
+            },
+            key: const Key('buttonNotesCubitPage')
+          ),
+          CustomButton(
+            title: 'Notes Page',
+            color: Colors.cyan,
+            onPressed: () {
+              Navigator.restorablePushNamed(
+                context,
+                NotesPage.routeName,
+              );
+            },
+            key: keyButtonNotesPage
+          ),
+        ],
+      ),
     );
   }
 }

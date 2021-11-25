@@ -24,13 +24,22 @@ void main() {
       expect(find.text('Notes App'), findsOneWidget);
     });
 
-    testWidgets('button for notes', (widgetTester) async {
+    testWidgets('button for notes cubit', (widgetTester) async {
       await widgetTester.pumpWidget(await createWidgetUnderTest());
       // var button = CustomButton(title: 'aaa', color: Colors.cyan, onPressed: () {},);
-      expect(find.byType(CustomButton), findsOneWidget);
+      expect(find.byType(CustomButton), findsNWidgets(2));
       // expect(find.byWidget(button), findsOneWidget);   // TODO: how can I find a specific button???
       expect(find.byKey(const Key('buttonNotesCubitPage')), findsOneWidget);
       expect(find.text('Notes Cubit Page'), findsOneWidget);
+    });
+
+    testWidgets('button for notes', (widgetTester) async {
+      await widgetTester.pumpWidget(await createWidgetUnderTest());
+      // var button = CustomButton(title: 'aaa', color: Colors.cyan, onPressed: () {},);
+      expect(find.byType(CustomButton), findsNWidgets(2));
+      // expect(find.byWidget(button), findsOneWidget);   // TODO: how can I find a specific button???
+      expect(find.byKey(const Key('buttonNotesPage')), findsOneWidget);
+      expect(find.text('Notes Page'), findsOneWidget);
     });
   });
 }

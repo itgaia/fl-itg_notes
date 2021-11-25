@@ -1,31 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:itg_notes/src/features/notes/presentation/note_page.dart';
+import 'package:itg_notes/src/features/notes_cubit/notes_cubit.dart';
+import 'package:itg_notes/src/features/settings/settings_controller.dart';
+import 'package:itg_notes/src/features/settings/settings_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:itg_notes/src/features/home/home_page.dart';
 
-import 'features/notes/presentation/note_page.dart';
-import 'features/notes/presentation/notes_page.dart';
-import 'features/notes_cubit/note_cubit_page.dart';
-import 'features/notes_cubit/notes_cubit.dart';
-import 'features/notes_cubit/notes_cubit_page.dart';
-import 'features/settings/settings_controller.dart';
-import 'features/settings/settings_view.dart';
-
-/// The Widget that configures your application.
-class MyApp extends StatelessWidget {
-  const MyApp({
-    Key? key,
-    required this.settingsController,
-  }) : super(key: key);
-
-  final SettingsController settingsController;
-
-  @override
-  Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The AnimatedBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
+void main() {
+  Future<Widget> createWidgetUnderTest() async {
+    final settingsController = SettingsController(SettingsService());
+    await settingsController.loadSettings();
+    // return MyApp(settingsController: settingsController);
     return AnimatedBuilder(
       animation: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -55,7 +41,7 @@ class MyApp extends StatelessWidget {
           // The appTitle is defined in .arb files found in the localization
           // directory.
           onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+          AppLocalizations.of(context)!.appTitle,
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
@@ -71,20 +57,13 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case NotesCubitPage.routeName:
-                    return NotesCubitPage(notesCubit: NotesCubit(), title: 'Notes Cubit',);
-                  case NoteCubitPage.routeName:
-                    return NoteCubitPage(notesCubit: NotesCubit(),);
-                  case NotesPage.routeName:
-                    // return NotesPage(notesCubit: NotesCubit(), title: 'Notes',);
-                    return const NotesPage(title: 'Notes',);
+                  // case SettingsView.routeName:
+                  //   return SettingsView(controller: settingsController);
+                  // case SampleItemDetailsView.routeName:
+                  //   return const SampleItemDetailsView();
                   case NotePage.routeName:
-                    return NotePage(notesCubit: NotesCubit(),);
-                  case HomePage.routeName:
                   default:
-                    return const HomePage();
+                    return NotePage(notesCubit: NotesCubit());
                 }
               },
             );
@@ -93,4 +72,20 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+  group('Notes page widget tests', () {
+    testWidgets('notes page class', (widgetTester) async {
+      await widgetTester.pumpWidget(await createWidgetUnderTest());
+      expect(find.byType(NotePage), findsOneWidget);
+    });
+
+    testWidgets('correct title', (widgetTester) async {
+      await widgetTester.pumpWidget(await createWidgetUnderTest());
+      expect(find.text('Note'), findsOneWidget);
+    });
+
+    test('correct route name', () {
+      expect(NotePage.routeName, '/note');
+    });
+  });
 }
