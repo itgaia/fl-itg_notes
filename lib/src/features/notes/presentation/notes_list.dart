@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:itg_notes/src/app_helper.dart';
 import 'package:itg_notes/src/features/notes/presentation/widgets/bottom_loader.dart';
 import 'package:itg_notes/src/features/notes/presentation/widgets/loading_widget.dart';
 import 'package:itg_notes/src/features/notes/presentation/widgets/notes_display.dart';
@@ -29,7 +30,7 @@ class _NotesListState extends State<NotesList> {
         if (state is Empty) {
           return const Center(child: Text('no notes'));
         } else if (state is Loading) {
-          return const LoadingWidget();
+          return const LoadingWidget(key: keyProgressIndicatorMain);
         } else if (state is Loaded) {
           // return NotesDisplay(notes: state.notes);
           print('>>> [NotesList/BlocBuilder] state is Loaded...');

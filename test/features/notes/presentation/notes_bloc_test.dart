@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:itg_notes/src/app_helper.dart';
 import 'package:itg_notes/src/core/error/failures.dart';
 import 'package:itg_notes/src/core/usecases/usecase.dart';
 import 'package:itg_notes/src/features/notes/domain/get_notes_usecase.dart';
@@ -7,20 +8,20 @@ import 'package:itg_notes/src/features/notes/domain/notes_entity.dart';
 import 'package:itg_notes/src/features/notes/presentation/notes_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockGetNotesUsecase extends Mock implements GetNotesUsecase {}
+import '../../../core/test_helper.dart';
 
 void main() {
   late NotesBloc bloc;
   late MockGetNotesUsecase mockGetNotesUsecase;
 
+  setUpAll(() {
+    // Necessary for using Params with mocktail null safety
+    registerFallbackValue(NoParams());
+  });
+
   setUp(() {
     mockGetNotesUsecase = MockGetNotesUsecase();
     bloc = NotesBloc(notes: mockGetNotesUsecase);
-  });
-
-  // Necessary setup to use Params with mocktail null safety
-  setUpAll(() {
-    registerFallbackValue(NoParams());
   });
 
   // test('initialState should be Empty', () {

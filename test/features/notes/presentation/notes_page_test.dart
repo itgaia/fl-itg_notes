@@ -1,6 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:itg_notes/injection_container.dart';
+import 'package:itg_notes/src/app_helper.dart';
+import 'package:itg_notes/src/core/usecases/usecase.dart';
 import 'package:itg_notes/src/features/notes/presentation/notes_list.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -12,8 +15,8 @@ import 'package:itg_notes/src/features/notes/presentation/notes_page.dart';
 import 'package:itg_notes/src/features/notes_cubit/notes_cubit.dart';
 import 'package:itg_notes/src/features/settings/settings_controller.dart';
 import 'package:itg_notes/src/features/settings/settings_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
+import '../../../core/test_helper.dart';
 
 // class MockNotesBloc extends MockBloc<NotesEvent, NotesState> implements NotesBloc {}
 // class NotesStateFake extends Fake implements NotesState {}
@@ -28,88 +31,34 @@ void main() {
   //   registerFallbackValue(fakeNotesState);
   // });
 
-  // Future<Widget> createWidgetUnderTest() async {
-  //   final settingsController = SettingsController(SettingsService());
-  //   await settingsController.loadSettings();
-  //   // return MyApp(settingsController: settingsController);
-  //   return AnimatedBuilder(
-  //     animation: settingsController,
-  //     builder: (BuildContext context, Widget? child) {
-  //       return MaterialApp(
-  //         // Providing a restorationScopeId allows the Navigator built by the
-  //         // MaterialApp to restore the navigation stack when a user leaves and
-  //         // returns to the app after it has been killed while running in the
-  //         // background.
-  //         restorationScopeId: 'app',
-  //
-  //         // Provide the generated AppLocalizations to the MaterialApp. This
-  //         // allows descendant Widgets to display the correct translations
-  //         // depending on the user's locale.
-  //         localizationsDelegates: const [
-  //           AppLocalizations.delegate,
-  //           GlobalMaterialLocalizations.delegate,
-  //           GlobalWidgetsLocalizations.delegate,
-  //           GlobalCupertinoLocalizations.delegate,
-  //         ],
-  //         supportedLocales: const [
-  //           Locale('en', ''), // English, no country code
-  //         ],
-  //
-  //         // Use AppLocalizations to configure the correct application title
-  //         // depending on the user's locale.
-  //         //
-  //         // The appTitle is defined in .arb files found in the localization
-  //         // directory.
-  //         onGenerateTitle: (BuildContext context) =>
-  //         AppLocalizations.of(context)!.appTitle,
-  //
-  //         // Define a light and dark color theme. Then, read the user's
-  //         // preferred ThemeMode (light, dark, or system default) from the
-  //         // SettingsController to display the correct theme.
-  //         theme: ThemeData(),
-  //         darkTheme: ThemeData.dark(),
-  //         themeMode: settingsController.themeMode,
-  //
-  //         // Define a function to handle named routes in order to support
-  //         // Flutter web url navigation and deep linking.
-  //         onGenerateRoute: (RouteSettings routeSettings) {
-  //           return MaterialPageRoute<void>(
-  //             settings: routeSettings,
-  //             builder: (BuildContext context) {
-  //               switch (routeSettings.name) {
-  //                 // case SettingsView.routeName:
-  //                 //   return SettingsView(controller: settingsController);
-  //                 // case SampleItemDetailsView.routeName:
-  //                 //   return const SampleItemDetailsView();
-  //                 case NotesPage.routeName:
-  //                 default:
-  //                   // return NotesPage(notesCubit: NotesCubit(), title: 'Notes');
-  //                   return const NotesPage(title: 'Notes');
-  //               }
-  //             },
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-  Future<Widget> _createWidgetUnderTest() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    // await di.init();
-    final settingsController = SettingsController(SettingsService());
-    await settingsController.loadSettings();
-    return MyApp(settingsController: settingsController);
-  }
+  late NotesBloc bloc;
+  late MockGetNotesUsecase mockGetNotesUsecase;
 
-  Future<void> _navigateToNotesPage(WidgetTester tester) async {
-    expect(find.byKey(HomePage.keyButtonNotesPage), findsOneWidget);
-    await tester.tap(find.byKey(HomePage.keyButtonNotesPage));
-    await tester.pumpAndSettle();
-  }
+  setUpAll(() {
+    // Necessary setup to use Params with mocktail null safety
+    registerFallbackValue(NoParams());
+  });
+
+  setUp(() {
+    mockGetNotesUsecase = MockGetNotesUsecase();
+    bloc = NotesBloc(notes: mockGetNotesUsecase);
+  });
+
+  setUpAll(() async {
+    sl.registerFactory(() => NotesBloc(notes: sl()));
+  });
 
   group('Notes page widget tests', () {
     test('correct route name', () {
       expect(NotesPage.routeName, '/notes');
+    });
+
+    testWidgets('page class', (widgetTester) async {
+      await testWidgetPageClass<HomePage>(widgetTester, createWidgetUnderTest);
+    });
+
+    testWidgets('page title', (widgetTester) async {
+      await testWidgetPageTitle(widgetTester, createWidgetUnderTest, 'Notes App');
     });
 
     // testWidgets('renders NotesList', (tester) async {

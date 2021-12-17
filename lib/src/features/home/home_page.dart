@@ -3,11 +3,10 @@ import 'package:itg_notes/src/core/custom_button.dart';
 import 'package:itg_notes/src/features/notes/presentation/notes_page.dart';
 import 'package:itg_notes/src/features/notes_cubit/notes_cubit_page.dart';
 
+import '../../app_helper.dart';
 import '../settings/settings_view.dart';
 
 class HomePage extends StatelessWidget {
-  static const keyButtonNotesPage = Key('buttonNotesPage');
-
   const HomePage({Key? key}) : super(key: key);
 
   static const routeName = '/';

@@ -1,8 +1,7 @@
 import 'package:itg_notes/src/features/notes/domain/get_notes_usecase.dart';
 import 'package:itg_notes/src/features/notes/domain/notes_entity.dart';
 import 'package:mocktail/mocktail.dart';
-
-class MockGetNotesUsecase extends Mock implements GetNotesUsecase {}
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<NotesEntity> notesTestData({int count = 5}) => List.generate(
   count,
@@ -20,7 +19,9 @@ void arrangeReturnsNNotesAfterNSecondsWait(
   {int count = 5, Duration wait = const Duration(seconds: 2)}) {
   when(() => mockGetNotesUsecase.getNotes()).thenAnswer(
     (_) async {
+      print('>>> arrangeReturnsNNotesAfterNSecondsWait - count: $count, wait: $wait - start...');
       await Future.delayed(wait);
+      print('>>> arrangeReturnsNNotesAfterNSecondsWait - count: $count, wait: $wait - end...');
       return notesTestData(count: count);
     }
   );

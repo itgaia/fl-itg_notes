@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:itg_notes/src/app_helper.dart';
 import 'package:itg_notes/src/core/error/exception.dart';
 import 'package:itg_notes/src/features/notes/data/notes_local_datasource.dart';
 import 'package:itg_notes/src/features/notes/data/notes_model.dart';
@@ -8,8 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../fixtures/fixture_reader.dart';
-
-class MockSharedPreferences extends Mock implements SharedPreferences {}
+import '../presentation/notes_test_helper.dart';
 
 void main() {
   late NotesLocalDataSourceImpl dataSource;
